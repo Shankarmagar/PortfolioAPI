@@ -49,6 +49,23 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Static files for uploaded images
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+// Root route handler
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Portfolio API',
+    version: '1.0.0',
+    status: 'running',
+    endpoints: {
+      health: '/health',
+      auth: '/api/auth',
+      projects: '/api/projects',
+      certifications: '/api/certifications',
+      journey: '/api/journey'
+    },
+    documentation: 'Visit /health for server status'
+  });
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
