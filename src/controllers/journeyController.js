@@ -22,7 +22,7 @@ export const getAllJourneyItems = async (req, res) => {
 
     // Build query
     let query = supabase
-      .from('journey_items_view')
+      .from('journey_items')
       .select('*', { count: 'exact' });
 
     // Add journey type filter
@@ -113,7 +113,9 @@ export const createJourneyItem = async (req, res) => {
   try {
     const { 
       title, 
-      company_name, 
+      company_name,
+      location,
+      skills = [], 
       start_date, 
       end_date, 
       details, 
@@ -143,8 +145,10 @@ export const createJourneyItem = async (req, res) => {
 
     // Prepare journey item data
     const journeyItemData = {
-      title: title.trim(),
-      company_name: company_name.trim(),
+      title: title,
+      company_name: company_name,
+      location: location,
+      skills: Array.isArray(skills) ? skills : [],
       start_date: new Date(start_date).toISOString().split('T')[0], // Format as YYYY-MM-DD
       end_date: end_date ? new Date(end_date).toISOString().split('T')[0] : null,
       details: details.trim(),
@@ -182,7 +186,9 @@ export const updateJourneyItem = async (req, res) => {
     const { id } = req.params;
     const { 
       title, 
-      company_name, 
+      company_name,
+      location,
+      skills, 
       start_date, 
       end_date, 
       details, 
@@ -234,6 +240,8 @@ export const updateJourneyItem = async (req, res) => {
     
     if (title !== undefined) updateData.title = title.trim();
     if (company_name !== undefined) updateData.company_name = company_name.trim();
+    if (location != undefined) updateData.location = location.trim();
+    if (skills !== undefined) updateData.skills = Array.isArray(skills) ? skills : [];
     if (start_date !== undefined) updateData.start_date = new Date(start_date).toISOString().split('T')[0];
     if (end_date !== undefined) updateData.end_date = end_date ? new Date(end_date).toISOString().split('T')[0] : null;
     if (details !== undefined) updateData.details = details.trim();

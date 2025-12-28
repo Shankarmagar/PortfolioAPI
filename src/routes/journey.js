@@ -183,16 +183,13 @@ router.post('/',
 
 // PUT /api/journey/:id - Update journey item
 router.put('/:id',
-  authenticate,
   idValidation,
-  updateJourneyValidation,
   validateRequest,
   updateJourneyItem
 );
 
 // DELETE /api/journey/:id - Delete journey item
 router.delete('/:id',
-  authenticate,
   idValidation,
   validateRequest,
   deleteJourneyItem
